@@ -10,6 +10,9 @@ return {
         },
     },
     {
+        "github/copilot.vim",
+    },
+    {
         "hrsh7th/nvim-cmp",
         config = function()
             local cmp = require("cmp")
@@ -38,7 +41,7 @@ return {
                         end
                     end, { "i", "s" }),
 
-                    ["<Tab>"] = cmp.mapping(function(fallback)
+                    ["<S-Tab>"] = cmp.mapping(function(fallback)
                         if cmp.visible() then
                             cmp.select_next_item()
                         elseif require("luasnip").expand_or_jumpable() then
@@ -47,17 +50,6 @@ return {
                             fallback()
                         end
                     end, { "i", "s" }),
-
-                    ["<S-Tab>"] = cmp.mapping(function(fallback)
-                        if cmp.visible() then
-                            cmp.select_prev_item()
-                        elseif require("luasnip").jumpable(-1) then
-                            require("luasnip").jump(-1)
-                        else
-                            fallback()
-                        end
-                    end, { "i", "s" }),
-
                 }),
                 sources = cmp.config.sources({
                     { name = "nvim_lsp" },
