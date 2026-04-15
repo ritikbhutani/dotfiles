@@ -32,3 +32,5 @@ vim.keymap.set('n', '<leader>h', ':nohlsearch<CR>')
 vim.wo.number = true
 
 vim.keymap.set('i', 'jk', '<esc>')
+
+vim.opt.clipboard = "unnamedplus"
