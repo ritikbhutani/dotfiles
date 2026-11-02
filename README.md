@@ -6,7 +6,7 @@ GNU Stow packages for my Arch + Hyprland setup, built on [Serpantinum](https://g
 cd ~/dev/dotfiles
 stow -t ~ hypr kitty nvim zsh bash starship tmux serpantinum-extras
 sudo stow -t / bin
-systemctl --user enable --now serp-nvim-colors.path
+systemctl --user enable --now serp-theme-sync.path
 ```
 
 `.stowrc` sets `--no-folding`, so only tracked files are linked. Files the shell generates at runtime (kitty `colors.conf`, nvim `matugen_colors.lua`) stay as real files outside the repo.
@@ -14,7 +14,7 @@ systemctl --user enable --now serp-nvim-colors.path
 | Package | What |
 | --- | --- |
 | `hypr` | Hyprland Lua config (0.57+). Serpantinum's upstream config, plus personal monitors, ALT-based keybinds, look and autostart |
-| `serpantinum-extras` | `serp-nvim-colors` + systemd path unit: re-runs my matugen nvim template whenever Serpantinum regenerates its palette. `serp-default-wallpaper`: sets the default wallpaper once per machine on first login (the image ships in the ansible repo, `pacman/files/wallpapers/`) |
+| `serpantinum-extras` | `serp-theme-sync` + systemd path unit: on every Serpantinum palette change, re-runs my matugen config (nvim colours + RGB colour) and sets the theme's primary accent on all OpenRGB devices via OpenRGB's local SDK server (`openrgb --server`, started from hypr autostart). `serp-default-wallpaper`: sets the default wallpapers once per machine on first login (images ship in the ansible repo, `pacman/files/wallpapers/`) |
 | `kitty` | Serpantinum default + `background_opacity 0.85`; colours come from Serpantinum's `colors.conf` |
 | `nvim` | Neovim config; live-reloads `matugen_colors.lua` |
 | `zsh` | `.zshrc` (+ `fetch` themed from Serpantinum's palette) and `user_aliases.zsh` |

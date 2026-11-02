@@ -1,5 +1,5 @@
 [Unit]
-Description=Watch serpantinum palette for nvim colour sync
+Description=Watch serpantinum palette (nvim + OpenRGB theme sync)
 
 [Path]
 PathChanged=%h/.local/state/serpantinum/qs_colors.json

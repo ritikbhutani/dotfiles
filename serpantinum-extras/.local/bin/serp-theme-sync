@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+# Follow serpantinum's theme into things it doesn't theme itself:
+#   - nvim  (~/.config/nvim/matugen_colors.lua, live-reloaded by init.lua)
+#   - RGB   (OpenRGB, static primary accent on every device via its local SDK server)
+# Triggered by serp-theme-sync.path when serpantinum's palette changes, and once at login
+# from Hyprland autostart with --wait-openrgb (OpenRGB's server needs a moment to come up).
+set -uo pipefail
+settings="${XDG_CONFIG_HOME:-$HOME/.config}/serpantinum/settings.json"
+wall="${XDG_CACHE_HOME:-$HOME/.cache}/serpantinum/wallpaper/current_wallpaper.png"
+cfg="${XDG_CONFIG_HOME:-$HOME/.config}/matugen/config.toml"
+rgb_file="${XDG_CACHE_HOME:-$HOME/.cache}/serpantinum-extras/rgb-primary"
+
+# Static presets (no wallpaper colours) keep the last generated colours.
+[ "$(jq -r '.theme.matugen // true' "$settings" 2>/dev/null)" = "true" ] || exit 0
+[ -s "$wall" ] || exit 0
+
+mode="$(jq -r '.theme.mode // "dark"' "$settings" 2>/dev/null)"
+type="$(jq -r '.theme.schemeType // "scheme-tonal-spot"' "$settings" 2>/dev/null)"
+mkdir -p "$(dirname "$rgb_file")"
+nice -n 15 matugen image "$wall" -c "$cfg" -m "$mode" -t "$type" --source-color-index 0 || exit 1
+
+# ---- RGB ----
+command -v openrgb >/dev/null || exit 0
+if [ "${1:-}" = "--wait-openrgb" ]; then
+  for _ in $(seq 1 60); do ss -ltn 2>/dev/null | grep -q '127.0.0.1:6742' && break; sleep 1; done
+fi
+ss -ltn 2>/dev/null | grep -q '127.0.0.1:6742' || exit 0   # OpenRGB (with --server) not running
+hex="$(tr -dc '0-9A-Fa-f' < "$rgb_file" | head -c 6)"
+[ ${#hex} -eq 6 ] || exit 0
+# --nodetect: talk only to the running server, never touch the hardware directly.
+timeout 30 openrgb --nodetect -c "$hex" >/dev/null 2>&1
