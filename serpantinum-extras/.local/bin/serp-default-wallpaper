@@ -1,9 +1,17 @@
 #!/usr/bin/env bash
-# Apply the default wallpaper once per machine (fresh installs), then never again.
+# Apply the default wallpapers once per machine (fresh installs), then never again.
 # Run from Hyprland autostart. Serpantinum's first launch picks a random wallpaper,
 # so wait for its IPC to come up and let that settle before overriding it.
+#
+# HDMI-A-1 (portrait) gets a pre-cropped, right-shifted copy, because serpantinum always centre-crops.
+# Order matters: setting a wallpaper re-themes from that image, so the crop goes first
+# and the full image on DP-1 goes last, which keeps the palette from the full image.
 set -uo pipefail
-DEFAULT="${SERP_DEFAULT_WALLPAPER:-$HOME/Pictures/Wallpapers/4k/ddg_1776373765829978071.jpg}"
+WALLS="$HOME/Pictures/Wallpapers"
+DEFAULT="${SERP_DEFAULT_WALLPAPER:-$WALLS/4k/ddg_1776373765829978071.jpg}"
+VERTICAL="${SERP_DEFAULT_WALLPAPER_VERTICAL:-$WALLS/vertical/ddg_1776373765829978071_HDMI-A-1.jpg}"
+VERTICAL_OUTPUT="HDMI-A-1"
+MAIN_OUTPUT="DP-1"
 MARKER="${XDG_STATE_HOME:-$HOME/.local/state}/serpantinum/default-wallpaper.applied"
 
 [ -e "$MARKER" ] && exit 0
@@ -15,4 +23,12 @@ for _ in $(seq 1 60); do
 done
 sleep 5
 
-serpantinum set wallpaper "$DEFAULT" all && mkdir -p "$(dirname "$MARKER")" && date -Is > "$MARKER"
+outputs="$(hyprctl monitors -j 2>/dev/null | jq -r '.[].name' 2>/dev/null)"
+if [ -f "$VERTICAL" ] && grep -qx "$VERTICAL_OUTPUT" <<<"$outputs" && grep -qx "$MAIN_OUTPUT" <<<"$outputs"; then
+  serpantinum set wallpaper "$DEFAULT" all &&
+  serpantinum set wallpaper "$VERTICAL" "$VERTICAL_OUTPUT" && sleep 3 &&
+  serpantinum set wallpaper "$DEFAULT" "$MAIN_OUTPUT" || exit 1
+else
+  serpantinum set wallpaper "$DEFAULT" all || exit 1
+fi
+mkdir -p "$(dirname "$MARKER")" && date -Is > "$MARKER"
