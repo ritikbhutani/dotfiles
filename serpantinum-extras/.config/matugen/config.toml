@@ -5,7 +5,3 @@
 [templates.nvim]
 input_path = "~/.config/matugen/templates/nvim-colors.lua.template"
 output_path = "~/.config/nvim/matugen_colors.lua"
-
-[templates.rgb]
-input_path = "~/.config/matugen/templates/rgb-primary.txt.template"
-output_path = "~/.cache/serpantinum-extras/rgb-primary"

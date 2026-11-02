@@ -1,5 +1,5 @@
 [Unit]
-Description=Sync serpantinum palette into nvim and OpenRGB
+Description=Sync serpantinum palette into nvim
 
 [Service]
 Type=oneshot
