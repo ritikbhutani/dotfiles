@@ -96,6 +96,8 @@ require("lazy").setup({
   "rafamadriz/friendly-snippets",
   "neovim/nvim-lspconfig",
   "nvimtools/none-ls.nvim",
+  "williamboman/mason.nvim",
+  "williamboman/mason-lspconfig.nvim",
   "tpope/vim-fugitive",
   {
     "ray-x/go.nvim",
@@ -337,6 +339,22 @@ if ok_cmp and ok_luasnip then
 end
 
 -- ==========================================================================
+-- MASON (LSP/TOOL INSTALLER)
+-- ==========================================================================
+local ok_mason, mason = pcall(require, "mason")
+if ok_mason then
+  mason.setup()
+end
+
+local ok_mlsp, mason_lspconfig = pcall(require, "mason-lspconfig")
+if ok_mlsp then
+  mason_lspconfig.setup({
+    ensure_installed = { "pyright", "lua_ls", "html" },
+    automatic_installation = true,
+  })
+end
+
+-- ==========================================================================
 -- LSP SETUP
 -- ==========================================================================
 local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -345,36 +363,34 @@ if ok_cmp_lsp then
   capabilities = cmp_nvim_lsp.default_capabilities()
 end
 
-local ok_lspconfig, lspconfig = pcall(require, 'lspconfig')
-if ok_lspconfig then
-  lspconfig.pyright.setup({
-    capabilities = capabilities,
-    on_attach = on_attach,
-    settings = {
-      python = { formatting = { provider = "none" } },
+vim.lsp.config('pyright', {
+  capabilities = capabilities,
+  on_attach = on_attach,
+  settings = {
+    python = { formatting = { provider = "none" } },
+  },
+})
+vim.lsp.config('nil_ls', {
+  capabilities = capabilities,
+  on_attach = on_attach,
+})
+vim.lsp.config('lua_ls', {
+  capabilities = capabilities,
+  on_attach = on_attach,
+  settings = {
+    Lua = {
+      runtime = { version = 'LuaJIT' },
+      diagnostics = { globals = { 'vim' } },
+      workspace = { checkThirdParty = false },
+      telemetry = { enable = false },
     },
-  })
-  lspconfig.nil_ls.setup({
-    capabilities = capabilities,
-    on_attach = on_attach,
-  })
-  lspconfig.lua_ls.setup({
-    capabilities = capabilities,
-    on_attach = on_attach,
-    settings = {
-      Lua = {
-        runtime = { version = 'LuaJIT' },
-        diagnostics = { globals = { 'vim' } },
-        workspace = { checkThirdParty = false },
-        telemetry = { enable = false },
-      },
-    },
-  })
-  lspconfig.html.setup({
-    capabilities = capabilities,
-    on_attach = on_attach,
-  })
-end
+  },
+})
+vim.lsp.config('html', {
+  capabilities = capabilities,
+  on_attach = on_attach,
+})
+vim.lsp.enable({ 'pyright', 'nil_ls', 'lua_ls', 'html' })
 
 -- ==========================================================================
 -- DIAGNOSTICS

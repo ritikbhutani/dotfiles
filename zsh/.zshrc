@@ -49,7 +49,7 @@ cd() {
 
 # Dynamic Fastfetch with Matugen Colors
 function fetch() {
-    local color_file="$HOME/.config/hypr/scripts/quickshell/qs_colors.json"
+    local color_file="${XDG_STATE_HOME:-$HOME/.local/state}/serpantinum/qs_colors.json"
     local config_path="/tmp/qs_fastfetch.jsonc"
     
     # Only rebuild the config if the Matugen colors changed or the config is missing
@@ -102,7 +102,7 @@ function fetch() {
 {
   "\$schema": "https://github.com/fastfetch-cli/fastfetch/raw/master/doc/json_schema.json",
   "logo": {
-    "source": "OS_LOGO_PLACEHOLDER",
+    "source": "arch_small",
     "color": {
       "1": "$c_blue",
       "2": "$c_sapphire"
@@ -168,3 +168,13 @@ EOF
 # Execute on Startup
 # ==============================================================================
 fetch
+
+# Load User Aliases
+source /home/hoodini/.config/zsh/user_aliases.zsh
+
+# Dynamic System Paths
+export WALLPAPER_DIR="/home/hoodini/Pictures/Wallpapers"
+export PATH="$HOME/.local/bin:$PATH"
+
+bindkey -s ^f "tmux-sessionizer\n"
+export PATH=$PATH:$HOME/go/bin

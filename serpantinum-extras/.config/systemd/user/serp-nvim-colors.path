@@ -1,0 +1,8 @@
+[Unit]
+Description=Watch serpantinum palette for nvim colour sync
+
+[Path]
+PathChanged=%h/.local/state/serpantinum/qs_colors.json
+
+[Install]
+WantedBy=default.target

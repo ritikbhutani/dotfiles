@@ -1,0 +1,7 @@
+# Personal matugen config: only templates serpantinum v2 doesn't render itself.
+# Run by ~/.local/bin/serp-nvim-colors whenever serpantinum regenerates its palette.
+[config]
+
+[templates.nvim]
+input_path = "~/.config/matugen/templates/nvim-colors.lua.template"
+output_path = "~/.config/nvim/matugen_colors.lua"
