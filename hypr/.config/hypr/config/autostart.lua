@@ -5,4 +5,5 @@ hl.on("hyprland.start", function()
 
   -- Personal
   hl.exec_cmd("openrgb --startminimized")
+  hl.exec_cmd("$HOME/.local/bin/serp-default-wallpaper")  -- one-shot on fresh installs (~/.local/bin is not on the session PATH)
 end)

@@ -14,7 +14,7 @@ systemctl --user enable --now serp-nvim-colors.path
 | Package | What |
 | --- | --- |
 | `hypr` | Hyprland Lua config (0.57+). Serpantinum's upstream config, plus personal monitors, ALT-based keybinds, look and autostart |
-| `serpantinum-extras` | `serp-nvim-colors` + systemd path unit: re-runs my matugen nvim template whenever Serpantinum regenerates its palette |
+| `serpantinum-extras` | `serp-nvim-colors` + systemd path unit: re-runs my matugen nvim template whenever Serpantinum regenerates its palette. `serp-default-wallpaper`: sets the default wallpaper once per machine on first login (the image ships in the ansible repo, `pacman/files/wallpapers/`) |
 | `kitty` | Serpantinum default + `background_opacity 0.85`; colours come from Serpantinum's `colors.conf` |
 | `nvim` | Neovim config; live-reloads `matugen_colors.lua` |
 | `zsh` | `.zshrc` (+ `fetch` themed from Serpantinum's palette) and `user_aliases.zsh` |
