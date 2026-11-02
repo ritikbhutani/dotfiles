@@ -2,18 +2,18 @@ hl.config({
   general = {
     border_size = 0,
     gaps_in = 4,
-    gaps_out = 6,
+    gaps_out = 4, -- personal (upstream: 6)
     float_gaps = 6,
     resize_on_border = true,
     extend_border_grab_area = 30,
   },
 
   decoration = {
-    rounding = 12,
+    rounding = 4, -- personal (upstream: 12)
     active_opacity = 1.0,
     inactive_opacity = 1.0,
     blur = {
-      enabled = true,
+      enabled = false, -- personal: off for the RX 550 on 4K (upstream: true)
       size = 8,
       passes = 2,
       new_optimizations = true,
@@ -26,7 +26,7 @@ hl.config({
   input = {
     kb_layout = "us",
     kb_options = "grp:alt_shift_toggle",
-    accel_profile = "flat",
+    -- accel_profile = "flat", -- personal: keep libinput default accel as in v1
     touchpad = {
       natural_scroll = true,
       disable_while_typing = false,
@@ -38,6 +38,17 @@ hl.config({
     font_family = "JetBrains Mono",
     disable_hyprland_logo = true,
     disable_splash_rendering = true,
+    force_default_wallpaper = 0,
+  },
+
+  -- Personal
+  cursor = {
+    no_warps = true,
+  },
+
+  ecosystem = {
+    no_update_news = true,
+    no_donation_nag = true,
   },
 })
 

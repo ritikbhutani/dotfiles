@@ -1,3 +1,6 @@
 hl.env("XDG_CURRENT_DESKTOP", "Hyprland")
 hl.env("XDG_SESSION_TYPE", "wayland")
 hl.env("XDG_SESSION_DESKTOP", "Hyprland")
+
+-- Personal
+hl.env("NIXOS_OZONE_WL", "1")
